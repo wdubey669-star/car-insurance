@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="description" content="Full car insurance protection for your peace of mind with YallaCompare.">
+<title>Car Insurance | YallaCompare</title>
+
+<style>
+     :root {
+        --pink: #d92378;
+        --pink-dark: #b91560;
+        --teal: #31a9b6;
+        --teal-dark: #238d9a;
+        --ink: #252a2e;
+        --muted: #707a80;
+        --pale: #f4fbfd;
+        --line: #e6eaec;
+        --white: #fff;
+        --shadow-hover: 0 25px 60px rgba(217, 35, 120, 0.25);
+        --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+     }
+
+     * { box-sizing: border-box; }
+     html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+     body { margin: 0; font-family: 'Inter', Arial, Helvetica, sans-serif; color: var(--ink); background: #fbfbfc; line-height: 1.65; overflow-x: hidden; }
+     button, input, select { font: inherit; }
+     button, a { -webkit-tap-highlight-color: transparent; }
+     a { color: inherit; text-decoration: none; }
+     button { cursor: pointer; }
+
+     /* Topbar */
+     .topbar {
+         height: 80px; background: rgba(255, 255, 255, 0.88); display: flex; align-items: center; justify-content: space-between;
+         padding: 0 clamp(20px, 5vw, 78px); position: sticky; top: 0; z-index: 30; border-bottom: 1px solid rgba(220, 230, 232, 0.5);
+         backdrop-filter: blur(20px); box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+     }
+     .logo { display: inline-flex; align-items: center; gap: 4px; line-height: 1; font-weight: 800; letter-spacing: -1.4px; }
+     .logo .yalla { font-size: 28px; color: var(--pink); }
+     .logo .compare { font-size: 23px; color: var(--teal); }
+     .logo small { display: block; font-size: 8px; letter-spacing: .2px; color: #8b9498; font-weight: 500; margin-top: 5px; }
+     
+     .menu-btn {
+         width: 44px; height: 44px; border: 1px solid #e5e9ea; border-radius: 50%; background: #fff;
+         display: grid; place-content: center; gap: 5px; transition: var(--transition);
+     }
+     .menu-btn span { width: 18px; height: 2px; background: #333; border-radius: 2px; display: block; transition: var(--transition); }
+     .menu-btn:hover { border-color: var(--pink); transform: rotate(90deg) scale(1.05); box-shadow: 0 0 20px rgba(217,35,120,0.25); }
+
+     .side-menu {
+         position: fixed; right: 24px; top: 90px; width: 270px; background: rgba(255,255,255,0.96);
+         border: 1px solid var(--line); box-shadow: var(--shadow-hover); border-radius: 20px; padding: 16px;
+         z-index: 40; display: grid; gap: 6px; opacity: 0; visibility: hidden; transform: translateY(-15px) scale(0.95);
+         transition: var(--transition); backdrop-filter: blur(25px);
+     }
+     .side-menu.open { opacity: 1; visibility: visible; transform: none; }
+     .side-menu a { padding: 12px 16px; border-radius: 12px; font-size: 13px; color: #525d61; font-weight: 500; transition: var(--transition); }
+     .side-menu a:hover { background: #fff0f7; color: var(--pink); transform: translateX(6px); }
+
+     /* Hero Section */
+     .hero {
+         min-height: 560px; position: relative; display: flex; align-items: center; justify-content: center;
+         text-align: center; color: #fff; overflow: hidden;
+         background: #315b66 url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=85') center center/cover no-repeat;
+     }
+     .hero:before {
+         content: ""; position: absolute; inset: 0;
+         background: linear-gradient(135deg, rgba(18,50,61,0.9), rgba(16,48,58,0.7));
+         backdrop-filter: blur(3px);
+     }
+     .hero-content { position: relative; z-index: 1; max-width: 920px; padding: 60px 24px; animation: heroIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+     .hero-icon-top {
+         width: 52px; height: 52px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50%;
+         display: grid; place-items: center; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+         font-size: 22px; margin: 0 auto 20px; animation: float 4s ease-in-out infinite;
+     }
+     .hero h1 { font-size: clamp(34px, 4.8vw, 56px); font-weight: 700; line-height: 1.15; margin: 0 auto 16px; text-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+     .hero p { font-size: 16px; max-width: 620px; margin: 0 auto 28px; color: #f0f7f8; opacity: 0.95; }
+     
+     .pill-btn {
+         border: 0; border-radius: 40px; padding: 18px 38px; background: linear-gradient(135deg, #ff2e8c, var(--pink)); color: #fff;
+         font-size: 12.5px; font-weight: 800; letter-spacing: 1px; 
+         box-shadow: 0 15px 35px rgba(217, 35, 120, 0.45), inset 0 2px 4px rgba(255,255,255,0.4);
+         transition: var(--transition); cursor: pointer; position: relative; overflow: hidden; z-index: 1;
+     }
+     .pill-btn::before {
+         content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+         transition: 0.6s; z-index: -1;
+     }
+     .pill-btn:hover::before { left: 100%; }
+     .pill-btn:hover { 
+         background: linear-gradient(135deg, #ff0077, var(--pink-dark)); 
+         transform: translateY(-6px) scale(1.04); 
+         box-shadow: 0 22px 48px rgba(217, 35, 120, 0.65), 0 0 30px rgba(255, 0, 128, 0.4); 
+     }
+
+     /* Quote Wizard Section */
+     .quote-wizard-section {
+         display: none; background: #fff; min-height: 85vh;
+         animation: heroIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+     }
+     .quote-wizard-section.active { display: block; }
+     
+     .wizard-container { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 24px; border: 1px solid #e5eaec; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+     .wizard-steps-header { font-size: 13px; color: var(--muted); margin-bottom: 25px; font-weight: 500; display: flex; gap: 10px; align-items: center; }
+     .wizard-steps-header span { color: var(--pink); font-weight: 700; }
+     
+     .wizard-title-box { text-align: center; margin-bottom: 35px; }
+     .wizard-title-box h2 { font-size: 30px; font-weight: 700; color: var(--ink); margin: 0 0 8px; }
+     .wizard-title-box p { font-size: 14px; font-weight: 700; color: var(--pink); margin: 0; }
+
+     .form-group { margin-bottom: 25px; }
+     .form-group label { display: block; font-size: 13.5px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+     .form-control {
+         width: 100%; border: 1px solid #dcdee0; border-radius: 12px; padding: 14px 16px; font-size: 14px; outline: 0;
+         background: #fafbfc; transition: var(--transition);
+     }
+     .form-control:focus { border-color: var(--teal); background: #fff; box-shadow: 0 0 0 4px rgba(49,169,182,0.12); }
+
+     .toggle-row { display: flex; gap: 12px; }
+     .toggle-btn {
+         flex: 1; padding: 12px; border: 2px solid #e0e5e8; border-radius: 12px; background: #fff; font-size: 14px; font-weight: 600;
+         color: var(--ink); cursor: pointer; transition: var(--transition); text-align: center;
+     }
+     .toggle-btn.selected { border-color: var(--pink); background: #fff0f7; color: var(--pink); box-shadow: 0 4px 15px rgba(217,35,120,0.15); }
+
+     .date-row { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 12px; }
+
+     .checkbox-group { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 500; color: var(--ink); margin-top: 10px; cursor: pointer; }
+     .checkbox-group input { width: 18px; height: 18px; accent-color: var(--pink); cursor: pointer; }
+
+     .continue-btn {
+         width: 100%; margin-top: 30px; padding: 16px; border: 0; border-radius: 12px; background: var(--pink); color: #fff;
+         font-size: 14px; font-weight: 800; cursor: pointer; transition: var(--transition); box-shadow: 0 10px 25px rgba(217,35,120,0.3);
+     }
+     .continue-btn:hover { background: var(--pink-dark); transform: translateY(-2px); }
+
+     /* Exact Screenshot Footer Style for Quote Wizard Button */
+     .exact-screenshot-footer {
+         background: #232044; color: #fff; padding: 60px 20px 40px; text-align: center; margin-top: 60px; font-family: 'Inter', Arial, sans-serif;
+     }
+     .exact-screenshot-footer h3 { font-size: 18px; font-weight: 600; margin-bottom: 25px; color: #fff; }
+     .footer-links-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; font-size: 14px; }
+     .footer-links-row a { color: #fff; text-decoration: none; transition: 0.3s; }
+     .footer-links-row a:hover { color: var(--pink); }
+     .footer-divider { width: 80%; height: 1px; background: rgba(255,255,255,0.2); margin: 30px auto; }
+     .payment-badges { display: flex; justify-content: center; gap: 12px; margin: 25px 0; }
+     .payment-badges span { background: #fff; color: #333; padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+     .app-store-row { display: flex; justify-content: center; gap: 15px; margin: 25px 0; flex-wrap: wrap; }
+     .store-badge { background: #000; color: #fff; padding: 10px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; font-size: 11px; text-align: left; border: 1px solid rgba(255,255,255,0.2); }
+     .store-badge strong { font-size: 14px; display: block; }
+     .footer-legal-text { font-size: 12.5px; color: #d0d0d0; max-width: 900px; margin: 25px auto; line-height: 1.8; }
+     .footer-bottom-bar { background: #1a1736; padding: 25px 20px; font-size: 12px; color: #b8b8b8; position: relative; }
+     .footer-bottom-bar p { margin: 6px 0; }
+     .whatsapp-float-icon {
+         position: fixed; right: 25px; bottom: 25px; width: 55px; height: 55px; background: #25d366; border-radius: 50%;
+         display: grid; place-items: center; color: #fff; font-size: 30px; box-shadow: 0 10px 25px rgba(37,211,102,0.4); z-index: 50; cursor: pointer;
+         transition: var(--transition);
+     }
+     .whatsapp-float-icon:hover { transform: scale(1.1); }
+
+     /* Regulatory Info Strip */
+     .reg-strip {
+         background: #fff; padding: 35px clamp(20px, 6vw, 90px); border-bottom: 1px solid #e6eaec;
+         display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; max-width: 1200px; margin: 0 auto;
+     }
+     .reg-item { display: flex; align-items: center; gap: 20px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+     .reg-badge { width: 55px; height: 55px; border-radius: 12px; background: #f0f5f7; display: grid; place-items: center; font-size: 24px; flex-shrink: 0; }
+
+     /* General Sections */
+     .section { padding: 90px clamp(22px, 7vw, 105px); }
+     .section-title { font-size: 32px; font-weight: 700; line-height: 1.2; margin: 0 0 35px; color: var(--ink); text-align: center; letter-spacing: -0.5px; }
+     
+     .ad-banner {
+         width: min(750px, 100%); margin: 25px auto; min-height: 105px; border-radius: 16px; overflow: hidden;
+         position: relative; background: #193944 url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80') center/cover;
+         display: flex; align-items: center; justify-content: space-between; padding: 22px 32px; color: #fff; isolation: isolate;
+         box-shadow: 0 18px 40px rgba(25, 57, 64, 0.25); transition: var(--transition);
+     }
+     .ad-banner:hover { transform: translateY(-6px); box-shadow: 0 25px 55px rgba(25, 57, 64, 0.35); }
+     .ad-banner:before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9, 44, 59, 0.95), rgba(23, 60, 69, 0.8)); z-index: -1; }
+     .ad-banner small { display: block; font-size: 10px; letter-spacing: 1.5px; color: #8ee5ee; font-weight: 800; margin-bottom: 4px; }
+     .ad-banner strong { display: block; font-size: 18px; line-height: 1.3; }
+     .ad-number { font-size: 42px; font-weight: 800; letter-spacing: -2px; }
+     .ad-number span { font-size: 11px; letter-spacing: 0; font-weight: 500; display: block; opacity: 0.9; }
+
+     /* What's Covered Cards */
+     .teal-section { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; padding-top: 75px; padding-bottom: 95px; }
+     .teal-section .section-title { color: #fff; margin-bottom: 50px; }
+
+     .covered-container { max-width: 1200px; margin: 0 auto; }
+     .covered-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; justify-content: center; }
+     .covered-card {
+         min-height: 280px; border-radius: 24px; background: rgba(255, 255, 255, 0.98); color: var(--ink);
+         padding: 40px 30px; text-align: center; box-shadow: 0 22px 50px rgba(10, 60, 68, 0.2);
+         transition: var(--transition); border: 1px solid rgba(255, 255, 255, 0.4); display: flex; flex-direction: column; justify-content: space-between;
+     }
+     .covered-card:hover { transform: translateY(-14px) scale(1.03); box-shadow: 0 35px 70px rgba(5, 35, 40, 0.35); }
+     
+     .round-icon {
+         margin: 0 auto 18px; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center;
+         background: #e6f8fa; color: var(--teal); font-size: 28px; border: 1px solid #d4f0f3;
+         box-shadow: 0 10px 25px rgba(49, 169, 182, 0.2); transition: var(--transition);
+     }
+     .covered-card:hover .round-icon { background: var(--teal); color: #fff; transform: scale(1.15) rotate(12deg); }
+     .covered-card h3 { font-size: 17px; font-weight: 700; margin: 0 0 12px; color: var(--ink); }
+     .covered-card p { font-size: 13px; line-height: 1.8; margin: 0; color: #5e686c; font-weight: 500; }
+
+     /* FAQ Section */
+     .faq-section { background: var(--pale); padding-top: 85px; padding-bottom: 95px; }
+     .faq-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 65px; align-items: start; max-width: 1100px; margin: 0 auto; }
+     .faq-layout h2 { font-size: 32px; line-height: 1.25; font-weight: 700; margin: 0; max-width: 270px; letter-spacing: -0.5px; }
+     .faq-list { display: grid; gap: 14px; }
+     .faq-item { background: #fff; border: 1px solid #e2edf0; border-radius: 14px; overflow: hidden; transition: var(--transition); box-shadow: 0 6px 20px rgba(0,0,0,0.02); }
+     .faq-question {
+         width: 100%; border: 0; background: #fff; text-align: left; padding: 20px 22px; display: flex;
+         align-items: center; justify-content: space-between; gap: 15px; font-size: 13.5px; font-weight: 600; color: #3f494d;
+         cursor: pointer; transition: background 0.2s;
+     }
+     .faq-question:hover { background: #fbfdfe; }
+     .faq-question .plus {
+         width: 28px; height: 28px; border-radius: 50%; background: #161b1d; color: #fff; display: grid;
+         place-items: center; flex-shrink: 0; font-size: 18px; transition: var(--transition);
+     }
+     .faq-item.open { border-color: var(--teal); box-shadow: 0 12px 30px rgba(49,169,182,0.12); }
+     .faq-item.open .plus { background: var(--pink); transform: rotate(45deg); }
+     .faq-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
+     .faq-answer > div { overflow: hidden; }
+     .faq-answer p { padding: 0 22px 20px; margin: 0; font-size: 12.5px; color: #778286; line-height: 1.85; }
+
+     /* Info Sections */
+     .info-section { padding: 90px clamp(22px, 7vw, 105px); background: #fff; }
+     .info-container { max-width: 1100px; margin: 0 auto; display: grid; gap: 50px; }
+     .info-card-box {
+         background: #f8fafb; border: 1px solid #e5eaec; border-radius: 22px; padding: 45px;
+         box-shadow: 0 15px 40px rgba(0,0,0,0.03); transition: var(--transition);
+     }
+     .info-card-box:hover { border-color: var(--teal); transform: translateY(-6px); box-shadow: 0 25px 55px rgba(49,169,182,0.12); }
+     .info-card-box h2 { font-size: 26px; font-weight: 700; line-height: 1.25; margin: 0 0 16px; color: var(--ink); }
+     .info-card-box p { font-size: 14px; color: var(--muted); line-height: 1.9; margin: 0; }
+
+     /* Contact Section */
+     .contact-section { padding-top: 60px; padding-bottom: 70px; }
+     .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; max-width: 1100px; margin: 0 auto; }
+     .contact-layout h2 { font-size: 30px; font-weight: 700; margin: 0 0 8px; letter-spacing: -0.5px; }
+     .contact-layout p { font-size: 12.5px; color: var(--muted); margin: 0; }
+
+     .newsletter-form { display: flex; gap: 12px; max-width: 460px; }
+     .newsletter-form input {
+         min-width: 0; flex: 1; border: 1px solid #d8dfdf; border-radius: 10px; padding: 15px 18px; font-size: 13px; outline: 0;
+         transition: var(--transition); background: #fff;
+     }
+     .newsletter-form input:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(49,169,182,0.15); }
+     .newsletter-form button {
+         border: 0; border-radius: 10px; background: var(--pink); color: white; padding: 0 26px; font-size: 11.5px; font-weight: 800;
+         transition: var(--transition); box-shadow: 0 8px 20px rgba(217,35,120,0.3); cursor: pointer;
+     }
+     .newsletter-form button:hover { background: var(--pink-dark); transform: translateY(-3px); }
+
+     /* Main Original Footer Style */
+     .footer { background: #fff; padding: 70px clamp(22px, 6vw, 85px) 35px; border-top: 1px solid #edf1f2; }
+     .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 40px; max-width: 1200px; margin: 0 auto; }
+     .footer-brand p { font-size: 11.5px; color: #858c8f; max-width: 260px; line-height: 1.85; margin: 12px 0; }
+     .phone { font-size: 14px; font-weight: 700; margin: 18px 0 12px; color: var(--ink); }
+     .apps { display: flex; gap: 10px; }
+     .app-badge {
+         background: #151515; color: #fff; border-radius: 10px; padding: 9px 14px; font-size: 9.5px; display: inline-flex; gap: 8px; align-items: center;
+         transition: var(--transition);
+     }
+     .app-badge:hover { transform: translateY(-3px); background: #000; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+     .app-badge strong { font-size: 12px; }
+
+     .footer-col h4 { font-size: 10.5px; color: var(--pink); text-transform: uppercase; letter-spacing: 0.8px; margin: 4px 0 18px; font-weight: 700; }
+     .footer-col a { display: block; font-size: 11.5px; color: #858c8f; margin: 0 0 10px; transition: var(--transition); }
+     .footer-col a:hover { color: var(--pink); transform: translateX(5px); }
+
+     .footer-bottom { border-top: 1px solid #edf1f2; margin-top: 45px; padding-top: 22px; display: flex; justify-content: space-between; gap: 15px; font-size: 10.5px; color: #9ba1a4; align-items: center; max-width: 1200px; margin-left: auto; margin-right: auto; }
+     .socials { display: flex; gap: 12px; }
+     .socials a { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid #e5e7e8; border-radius: 50%; font-size: 12px; transition: var(--transition); }
+     .socials a:hover { background: var(--pink); color: #fff; border-color: var(--pink); transform: scale(1.15) rotate(8deg); }
+
+     /* Video Screenshot Footer Style Added at the Very Bottom of Website */
+     .video-disclaimer-footer {
+         background: #fbfbfc; border-top: 1px solid #e5eaec; padding: 60px clamp(20px, 6vw, 90px); font-size: 13px; color: #555; line-height: 1.8;
+     }
+     .video-disclaimer-container { max-width: 1200px; margin: 0 auto; }
+     .video-disclaimer-container p { margin-bottom: 18px; }
+     .video-disclaimer-bold { font-weight: 700; color: #252a2e; }
+     .video-reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 35px; padding-top: 30px; border-top: 1px solid #d5dcde; }
+     .video-reg-box h4 { font-size: 15px; font-weight: 700; color: #252a2e; margin-bottom: 8px; }
+     .video-reg-box p { margin: 4px 0; font-size: 12.5px; }
+
+     /* Modal & Toast */
+     .modal-back {
+         position: fixed; inset: 0; background: rgba(20, 43, 49, 0.75); z-index: 100; display: grid; place-items: center;
+         padding: 20px; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(10px);
+     }
+     .modal-back.show { opacity: 1; visibility: visible; }
+     .modal {
+         width: min(500px, 100%); background: #fff; border-radius: 22px; padding: 40px; position: relative;
+         transform: translateY(25px) scale(0.95); transition: var(--transition); box-shadow: 0 35px 90px rgba(7, 26, 29, 0.35);
+     }
+     .modal-back.show .modal { transform: none; }
+     .modal h2 { font-size: 28px; font-weight: 700; margin: 0 0 8px; color: var(--ink); }
+     .modal p { font-size: 13.5px; color: var(--muted); margin: 0 0 26px; }
+     .modal-close {
+         position: absolute; right: 18px; top: 18px; border: 0; background: #f3f5f5; border-radius: 50%; width: 36px; height: 36px;
+         font-size: 20px; display: grid; place-items: center; transition: var(--transition); cursor: pointer;
+     }
+     .modal-close:hover { background: var(--pink); color: #fff; transform: rotate(90deg); }
+
+     .modal-form { display: grid; gap: 16px; }
+     .modal-form input, .modal-form textarea {
+         width: 100%; border: 1px solid #dcdee0; border-radius: 12px; padding: 15px; font-size: 13.5px; outline: 0;
+         transition: var(--transition); background: #fafbfc;
+     }
+     .modal-form input:focus, .modal-form textarea:focus { border-color: var(--teal); background: #fff; box-shadow: 0 0 0 4px rgba(49,169,182,0.12); }
+     .modal-form textarea { resize: vertical; min-height: 95px; }
+     .modal-form button {
+         padding: 15px; border: 0; background: var(--pink); color: #fff; border-radius: 12px; font-size: 12.5px; font-weight: 800;
+         transition: var(--transition); box-shadow: 0 10px 25px rgba(217,35,120,0.3); cursor: pointer;
+     }
+     .modal-form button:hover { background: var(--pink-dark); transform: translateY(-2px); }
+
+     .toast {
+         position: fixed; left: 50%; bottom: 35px; transform: translate(-50%, 30px); opacity: 0; pointer-events: none;
+         background: #20292c; color: #fff; padding: 15px 26px; border-radius: 14px; font-size: 13.5px; z-index: 110;
+         transition: var(--transition); box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+     }
+     .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+     .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+     .reveal.visible { opacity: 1; transform: none; }
+
+     .progress { position: fixed; top: 0; left: 0; width: 0; height: 3.5px; background: linear-gradient(90deg, var(--pink), var(--teal)); z-index: 101; transition: width 0.08s linear; }
+
+     @keyframes heroIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+     @media(max-width: 900px) {
+         .reg-strip, .faq-layout, .contact-layout, .video-reg-grid { grid-template-columns: 1fr; gap: 30px; }
+         .covered-grid { grid-template-columns: 1fr; gap: 24px; }
+         .section, .info-section { padding-left: 24px; padding-right: 24px; }
+     }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="topbar" id="top">
+    <a class="logo" href="#top" aria-label="YallaCompare home">
+        <span><span class="yalla">yalla</span><span class="compare">Compare</span><small>A Cigna Company</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+</header>
+
+<nav class="side-menu" id="sideMenu" aria-label="Main menu">
+    <a href="#car" class="nav-link">Car Insurance</a>
+    <a href="#covered" class="nav-link">What's covered</a>
+    <a href="#faq" class="nav-link">Frequently asked questions</a>
+    <a href="#contact" class="nav-link">Stay in touch</a>
+</nav>
+
+<!-- MAIN HOMEPAGE CONTENT -->
+<div id="mainWebsiteContent">
+    <main>
+        <section class="hero" id="car">
+            <div class="hero-content">
+                <div class="hero-icon-top">🚗</div>
+                <h1>Full car insurance protection for<br>your peace of mind</h1>
+                <p>Better, faster, and more affordable vehicle insurance</p>
+                <button class="pill-btn trigger-quote-wizard">GET YOUR CAR INSURANCE QUOTE</button>
+            </div>
+        </section>
+
+        <div class="reg-strip">
+            <div class="reg-item">
+                <div class="reg-badge">🏛️</div>
+                <div>Regulated by the Central Bank of the UAE (CBUAE)<br><strong>YallaCompare Insurance Broker LLC (License #20)[cite: 2]</strong></div>
+            </div>
+            <div class="reg-item">
+                <div class="reg-badge">🛡️</div>
+                <div>We carefully select the best insurance providers in the UAE to ensure you get the most competitive rates and the best coverage benefits[cite: 5].</div>
+            </div>
+        </div>
+
+        <div class="ad-banner">
+            <div><small>HEALTH INSURANCE</small><strong>BASIC PLAN STARTING</strong></div>
+            <div class="ad-number">407<span> AED</span></div>
+        </div>
+
+        <section class="section teal-section center" id="covered">
+            <div class="covered-container">
+                <h2 class="section-title">What's covered</h2>
+                <div class="covered-grid">
+                    <article class="covered-card reveal">
+                        <div class="round-icon">🚗</div>
+                        <h3>You, the driver</h3>
+                        <p>Personal accident cover for driver. The driver is covered up to AED 200,000 in case of death or permanent disability resulting from an accident[cite: 5].</p>
+                    </article>
+                    <article class="covered-card reveal">
+                        <div class="round-icon">👥</div>
+                        <h3>The passengers</h3>
+                        <p>Personal accident cover for passengers. The passengers are covered up to AED 200,000 in case of death or permanent disability resulting from an accident[cite: 5].</p>
+                    </article>
+                    <article class="covered-card reveal">
+                        <div class="round-icon">🛠️</div>
+                        <h3>Your car's trip to the garage</h3>
+                        <p>Towing Fees Covered. If your car breaks down, we'll cover the cost of towing it to the nearest garage, so you don't have to worry about additional expenses[cite: 5].</p>
+                    </article>
+                    <article class="covered-card reveal">
+                        <div class="round-icon">🛞</div>
+                        <h3>Flat tyre Assistance covered</h3>
+                        <p>Flat tyre service. If you get a flat tyre, we'll come to your aid and either fix the tyre or replace it, so you can continue your journey without hassle[cite: 5].</p>
+                    </article>
+                    <article class="covered-card reveal">
+                        <div class="round-icon">🔋</div>
+                        <h3>When your battery is dead</h3>
+                        <p>Battery boosting. If your car battery dies, we'll provide a jump start to get you back on the road quickly, saving you from delays[cite: 5].</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section faq-section" id="faq">
+            <div class="faq-layout">
+                <h2>You might be asking yourself</h2>
+                <div class="faq-list">
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false">Is car insurance mandatory in the UAE? <span class="plus">+</span></button>
+                        <div class="faq-answer"><div><p>Yes, third-party liability insurance is legally required in the UAE for all vehicles driven on public roads[cite: 5].</p></div></div>
+                    </article>
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false">What is the penalty for driving without auto insurance? <span class="plus">+</span></button>
+                        <div class="faq-answer"><div><p>Driving without insurance can result in heavy fines, traffic points, and vehicle confiscation according to UAE traffic laws[cite: 5].</p></div></div>
+                    </article>
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false">How much does car insurance cost in Dubai and Abu Dhabi? <span class="plus">+</span></button>
+                        <div class="faq-answer"><div><p>Costs vary based on car value, driver age, vehicle type, and choice of comprehensive or third-party cover[cite: 5].</p></div></div>
+                    </article>
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false">What is the difference between third-party and comprehensive car insurance? <span class="plus">+</span></button>
+                        <div class="faq-answer"><div><p>Third-party covers damage to others, while comprehensive covers both third-party liabilities and damage to your own vehicle[cite: 5].</p></div></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="ad-banner" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80')">
+            <div><small>HEALTH INSURANCE</small><strong>BASIC PLAN STARTING</strong></div>
+            <div class="ad-number">407<span> AED</span></div>
+        </div>
+
+        <section class="info-section">
+            <div class="info-container">
+                <div class="info-card-box reveal">
+                    <h2>Car insurance simplified</h2>
+                    <p>Compare car insurance from the UAE's top providers in one place. Whether you drive in Dubai, Abu Dhabi or anywhere across the Emirates, YallaCompare helps you find the right coverage in minutes – and we always strive to provide you with some of the cheapest prices available for your maximum peace of mind[cite: 5].</p>
+                </div>
+                
+                <div class="info-card-box reveal">
+                    <h2>Compare third-party and comprehensive car insurance</h2>
+                    <p>Third-party car insurance is the minimum legal cover in the UAE and pays for damage you cause to other people, vehicles or property. Comprehensive car insurance also covers damage to your own vehicle – including accidents, fire, theft and more. Compare both online and choose the level of protection that suits you and your budget[cite: 5].</p>
+                    <div style="margin-top: 30px;">
+                        <button class="pill-btn trigger-quote-wizard">GET YOUR ONLINE AUTO INSURANCE QUOTE</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact-section" id="contact">
+            <div class="contact-layout">
+                <div><h2>Stay in touch</h2><p>Subscribe to our newsletter and stay updated.</p></div>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" placeholder="EMAIL" aria-label="Email address" required>
+                    <button type="submit">SUBSCRIBE</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ORIGINAL MULTI-COLUMN FOOTER FOR MAIN PAGE -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a class="logo" href="#top"><span><span class="yalla">yalla</span><span class="compare">Compare</span><small>A Cigna Company</small></span></a>
+                <p>YallaCompare.com is the leading finance comparison site in Abu Dhabi, Dubai, and the Middle East[cite: 2, 5].</p>
+                <p>YallaCompare, United Arab Emirates (UAE)[cite: 2, 5]</p>
+                <div class="phone">+971 45 622 100[cite: 5]</div>
+                <div class="apps">
+                    <a href="#" class="app-badge" aria-label="App Store"><strong>●</strong><span>Download on the<br><b>App Store</b></span></a>
+                    <a href="#" class="app-badge" aria-label="Google Play"><strong>▶</strong><span>GET IT ON<br><b>Google Play</b></span></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick links</h4>
+                <a href="#">Blog</a>
+                <a href="#">Terms and Conditions</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">About Us</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Careers</a>
+            </div>
+            <div class="footer-col">
+                <h4>Finance Products</h4>
+                <a href="#">Credit Cards</a>
+                <a href="#">Personal Loans</a>
+                <a href="#">Bank Accounts</a>
+                <a href="#">Guide to Investing</a>
+                <a href="#">List of Banks</a>
+            </div>
+            <div class="footer-col">
+                <h4>Insurance</h4>
+                <a href="#">Car Insurance (Third Party Liability)</a>
+                <a href="#">Health Insurance</a>
+                <a href="#">International Health Insurance</a>
+                <a href="#">Travel Insurance</a>
+                <a href="#">Life Insurance</a>
+                <a href="#">Home Insurance</a>
+                <a href="#">Pet Insurance</a>
+            </div>
+            <div class="footer-col">
+                <h4>Tools</h4>
+                <a href="#">Car Loan Calculator</a>
+                <a href="#">Mortgage Calculator</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 YallaCompare. All rights reserved.</span>
+            <div class="socials">
+                <a href="#" aria-label="Facebook">f</a>
+                <a href="#" aria-label="Instagram">◎</a>
+                <a href="#" aria-label="LinkedIn">in</a>
+                <a href="#" aria-label="YouTube">▶</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- VIDEO DISCLAIMER FOOTER AT THE VERY BOTTOM OF WEBSITE -->
+    <footer class="video-disclaimer-footer">
+        <div class="video-disclaimer-container">
+            <p class="video-disclaimer-bold">YallaCompare, United Arab Emirates[cite: 2]</p>
+            <p>Information found on YallaCompare is provided for illustrative purposes only, rates are subject to change based on your personal circumstances[cite: 2].</p>
+            <p>You should always speak to a trained professional before taking out any form of finance[cite: 2].</p>
+            <p>Implications of non-payment: If you fail to keep up with repayments on your finance, your bank may file a report with the UAE credit rating agency which may impact your ability to borrow from UAE banks in the future[cite: 2].</p>
+            <p class="video-disclaimer-bold">YOUR HOME MAY BE REPOSSESSED IF YOU DO NOT KEEP UP REPOSSESSED REPAYMENTS ON A MORTGAGE, LOAN OR ANY OTHER DEBT SECURED ON IT[cite: 2].</p>
+            <p>Insurance is provided by YallaCompare Insurance Broker LLC (formerly Gulf Resources Insurance Management Services Limited)[cite: 2].</p>
+
+            <div class="video-reg-grid">
+                <div class="video-reg-box">
+                    <h4>UAE – Federal Level[cite: 2]</h4>
+                    <p>Licensed and regulated by the[cite: 2]</p>
+                    <p><strong>Central Bank of the UAE | Registration No. 20[cite: 2]</strong></p>
+                </div>
+                <div class="video-reg-box">
+                    <h4>DUBAI[cite: 2]</h4>
+                    <p style="color:#777;">Department of Economy & Tourism[cite: 2]</p>
+                    <p>Dubai - Head Office[cite: 2]</p>
+                    <p>Trade License issued by Department of Economy & Tourism in Dubai[cite: 2]</p>
+                    <p><strong>Licence No. 235006[cite: 2]</strong></p>
+                    <p>Health Insurance Intermediary permit issued by Dubai Health Authority ID:[cite: 2]</p>
+                    <p><strong>BRK-00045[cite: 2]</strong></p>
+                    <p style="margin-top: 8px;">Member of the Emirates Insurance Federation[cite: 2]</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- VEHICLE DETAILS QUOTE WIZARD SECTION WITH EXACT SCREENSHOT FOOTER INSIDE -->
+<div class="quote-wizard-section" id="quoteWizard">
+    <div class="wizard-container">
+        <div class="wizard-steps-header">
+            Vehicle > Driver > Quotes > Buy > Payment
+        </div>
+        <div class="wizard-title-box">
+            <h2>Vehicle Details</h2>
+            <p>This will only take 1 minute!</p>
+        </div>
+
+        <form id="vehicleDetailsForm">
+            <div class="form-group">
+                <label>Car Year</label>
+                <input type="number" class="form-control" value="2026" required>
+            </div>
+
+            <div class="form-group">
+                <label>Is your car brand new?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn" data-group="brandNew" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn selected" data-group="brandNew" data-val="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Are you buying your first Car?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn" data-group="firstCar" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn selected" data-group="firstCar" data-val="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Make</label>
+                <input type="text" class="form-control" placeholder="Make" required>
+            </div>
+
+            <div class="form-group">
+                <label>Model</label>
+                <input type="text" class="form-control" placeholder="Model" required>
+            </div>
+
+            <div class="form-group">
+                <label>Model Details</label>
+                <input type="text" class="form-control" placeholder="Model Details">
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-group">
+                    <input type="checkbox"> My car is not in the list
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>When was your car first registered?</label>
+                <div class="date-row">
+                    <select class="form-control"><option>10</option></select>
+                    <select class="form-control"><option>October</option></select>
+                    <select class="form-control"><option>2026</option></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>In which city do you want to register this car?</label>
+                <input type="text" class="form-control" value="Dubai" required>
+            </div>
+
+            <div class="form-group">
+                <label>Is this car GCC spec?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn selected" data-group="gcc" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn" data-group="gcc" data-val="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Is this car Modified?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn" data-group="modified" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn selected" data-group="modified" data-val="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Is the current policy of this car fully comprehensive?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn" data-group="comprehensive" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn selected" data-group="comprehensive" data-val="no">No</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Does the current policy of this car include agency repair?</label>
+                <div class="toggle-row">
+                    <button type="button" class="toggle-btn" data-group="agency" data-val="yes">Yes</button>
+                    <button type="button" class="toggle-btn selected" data-group="agency" data-val="no">No</button>
+                </div>
+            </div>
+
+            <button type="submit" class="continue-btn">Continue</button>
+        </form>
+    </div>
+
+    <!-- EXACT SCREENSHOT FOOTER FOR WIZARD BUTTON CLICK -->
+    <footer class="exact-screenshot-footer">
+        <h3>Compare our insurance products</h3>
+        <div class="footer-links-row">
+            <a href="#">Car Insurance</a>
+            <a href="#">Health Insurance</a>
+            <a href="#">Group Health Insurance</a>
+            <a href="#">Life Insurance</a>
+            <a href="#">Home Insurance</a>
+            <a href="#">Travel Insurance</a>
+            <a href="#">Pet Insurance</a>
+        </div>
+        
+        <div class="footer-divider"></div>
+
+        <div class="footer-links-row">
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Disclaimer</a>
+            <a href="#">Contact Us / Complaints</a>
+            <a href="#">About Us</a>
+            <a href="#">FAQs</a>
+        </div>
+
+        <div class="payment-badges">
+            <span>MasterCard</span>
+            <span>VISA</span>
+        </div>
+
+        <div class="app-store-row">
+            <div class="store-badge">▶ &nbsp;<div>GET IT ON<br><strong>Google Play</strong></div></div>
+            <div class="store-badge"> &nbsp;<div>Download on the<br><strong>App Store</strong></div></div>
+        </div>
+
+        <div class="footer-legal-text">
+            Insurance is provided by Yallacompare Insurance Broker LLC (formerly Gulf Resources Insurance Management Services Limited), an Insurance Broker regulated by the UAE Central Bank (registration #20)[cite: 7].
+        </div>
+
+        <div class="footer-bottom-bar">
+            <p>707 Tameem House, Barsha Heights, Dubai, UAE, PO BOX 488096 yallacompare.com 045622100[cite: 7]</p>
+            <p>© 2026 yallacompare. All Rights Reserved.[cite: 7]</p>
+        </div>
+    </footer>
+    <div class="whatsapp-float-icon">💬</div>
+</div>
+
+<div class="modal-back" id="modalBack" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+        <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+        <h2 id="modalTitle">Talk to an expert</h2>
+        <p>Share your details and our team can follow up about your car insurance enquiry.</p>
+        <form class="modal-form" id="contactForm">
+            <input name="name" placeholder="Your name" required>
+            <input name="phone" type="tel" placeholder="Phone number" required>
+            <input name="email" type="email" placeholder="Email address (optional)">
+            <textarea name="message" id="messageField" placeholder="How can we help?"></textarea>
+            <button type="submit">SEND REQUEST</button>
+        </form>
+    </div>
+</div>
+<div class="toast" id="toast" role="status">Thank you — your request has been prepared.</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const modalBack = document.getElementById('modalBack');
+        const toast = document.getElementById('toast');
+        const mainContent = document.getElementById('mainWebsiteContent');
+        const quoteWizard = document.getElementById('quoteWizard');
+
+        if (menuBtn && sideMenu) {
+            menuBtn.addEventListener('click', () => {
+                const open = sideMenu.classList.toggle('open');
+                menuBtn.setAttribute('aria-expanded', String(open));
+            });
+            document.addEventListener('click', e => {
+                if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sideMenu.classList.remove('open');
+                }
+            });
+        }
+
+        document.querySelectorAll('.trigger-quote-wizard').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (quoteWizard.classList.contains('active')) {
+                    quoteWizard.classList.remove('active');
+                    if (mainContent) mainContent.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    if (mainContent) mainContent.style.display = 'none';
+                    quoteWizard.classList.add('active');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const group = btn.dataset.group;
+                document.querySelectorAll(`.toggle-btn[data-group="${group}"]`).forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+
+        const vehicleDetailsForm = document.getElementById('vehicleDetailsForm');
+        if (vehicleDetailsForm) {
+            vehicleDetailsForm.addEventListener('submit', e => {
+                e.preventDefault();
+                showToast('Vehicle details submitted successfully! Moving to next step.');
+            });
+        }
+
+        function openModal(title, message = '') {
+            const modalTitle = document.getElementById('modalTitle');
+            const messageField = document.getElementById('messageField');
+            if (modalTitle) modalTitle.textContent = title || 'Talk to an expert';
+            if (messageField) messageField.value = message;
+            if (modalBack) {
+                modalBack.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            if (modalBack) {
+                modalBack.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.querySelectorAll('.open-contact').forEach(btn => {
+            btn.addEventListener('click', () => {
+                openModal(btn.dataset.title || 'Talk to an expert');
+            });
+        });
+
+        const modalClose = document.getElementById('modalClose');
+        if (modalClose) modalClose.addEventListener('click', closeModal);
+
+        if (modalBack) {
+            modalBack.addEventListener('click', e => {
+                if (e.target === modalBack) closeModal();
+            });
+        }
+
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const willOpen = !item.classList.contains('open');
+                item.classList.toggle('open', willOpen);
+                btn.setAttribute('aria-expanded', String(willOpen));
+            });
+        });
+
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        const progress = document.getElementById('progress');
+        window.addEventListener('scroll', () => {
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            if (progress) progress.style.width = (scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0) + '%';
+        });
+
+        let toastTimer;
+        function showToast(msg) {
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+        }
+
+        const newsletterForm = document.getElementById('newsletterForm');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', e => {
+                e.preventDefault();
+                e.currentTarget.reset();
+                showToast('Thank you for subscribing!');
+            });
+        }
+
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', e => {
+                e.preventDefault();
+                closeModal();
+                showToast('Your enquiry has been submitted successfully.');
+                e.currentTarget.reset();
+            });
+        }
+    });
+</script>
+</body>
+</html>
